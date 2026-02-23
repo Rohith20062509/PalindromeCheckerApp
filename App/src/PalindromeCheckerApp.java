@@ -1,39 +1,45 @@
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
-
 public class PalindromeCheckerApp {
 
     public static boolean isPalindrome(String str) {
-        // Optional: remove spaces and make lowercase
-        str = str.replaceAll("\\s+", "").toLowerCase();
 
-        Stack<Character> stack = new Stack<>();
-        Queue<Character> queue = new LinkedList<>();
+        int left = 0;
+        int right = str.length() - 1;
 
-        // Add characters to both stack and queue
-        for (char ch : str.toCharArray()) {
-            stack.push(ch);
-            queue.add(ch);
-        }
+        while (left < right) {
 
-        // Compare elements
-        while (!stack.isEmpty()) {
-            if (!stack.pop().equals(queue.remove())) {
+            // Skip spaces on left
+            if (str.charAt(left) == ' ') {
+                left++;
+                continue;
+            }
+
+            // Skip spaces on right
+            if (str.charAt(right) == ' ') {
+                right--;
+                continue;
+            }
+
+            // Compare ignoring case
+            if (Character.toLowerCase(str.charAt(left)) !=
+                    Character.toLowerCase(str.charAt(right))) {
                 return false;
             }
+
+            left++;
+            right--;
         }
 
         return true;
     }
 
     public static void main(String[] args) {
-        String input = "civic";
+
+        String input = "A man a plan a canal Panama";
 
         if (isPalindrome(input)) {
-            System.out.println(input + " is a palindrome.");
+            System.out.println("Palindrome");
         } else {
-            System.out.println(input + " is not a palindrome.");
+            System.out.println("Not a Palindrome");
         }
     }
 }
