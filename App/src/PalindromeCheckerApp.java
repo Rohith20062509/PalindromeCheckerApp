@@ -1,36 +1,93 @@
-import java.util.Deque;
-import java.util.LinkedList;
+public class LinkedListPalindrome {
 
-public class PalindromeCheckerApp {
+    // Node class
+    static class Node {
+        char data;
+        Node next;
 
-    public static boolean isPalindrome(String str) {
-        // Remove spaces and convert to lowercase
-        str = str.replaceAll("\\s+", "").toLowerCase();
+        Node(char data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
 
-        Deque<Character> deque = new LinkedList<>();
-
-        // Add characters to deque
-        for (char ch : str.toCharArray()) {
-            deque.addLast(ch);
+    // Check if linked list is palindrome
+    public static boolean isPalindrome(Node head) {
+        if (head == null || head.next == null) {
+            return true;
         }
 
-        // Compare front and rear
-        while (deque.size() > 1) {
-            if (!deque.removeFirst().equals(deque.removeLast())) {
+        // Step 1: Find middle using slow & fast pointer
+        Node slow = head;
+        Node fast = head;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        // Step 2: Reverse second half
+        Node secondHalf = reverse(slow);
+        Node copySecondHalf = secondHalf;
+
+        // Step 3: Compare both halves
+        Node firstHalf = head;
+        while (copySecondHalf != null) {
+            if (firstHalf.data != copySecondHalf.data) {
                 return false;
             }
+            firstHalf = firstHalf.next;
+            copySecondHalf = copySecondHalf.next;
         }
 
         return true;
     }
 
+    // Reverse linked list
+    private static Node reverse(Node head) {
+        Node prev = null;
+        Node current = head;
+
+        while (current != null) {
+            Node next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+
+        return prev;
+    }
+
+    // Helper method to insert at end
+    public static Node append(Node head, char data) {
+        Node newNode = new Node(data);
+
+        if (head == null) {
+            return newNode;
+        }
+
+        Node temp = head;
+        while (temp.next != null) {
+            temp = temp.next;
+        }
+
+        temp.next = newNode;
+        return head;
+    }
+
     public static void main(String[] args) {
+        Node head = null;
+
         String input = "madam";
 
-        if (isPalindrome(input)) {
-            System.out.println(input + " is a palindrome.");
+        for (char ch : input.toCharArray()) {
+            head = append(head, ch);
+        }
+
+        if (isPalindrome(head)) {
+            System.out.println("Linked List is a palindrome.");
         } else {
-            System.out.println(input + " is not a palindrome.");
+            System.out.println("Linked List is not a palindrome.");
         }
     }
 }
