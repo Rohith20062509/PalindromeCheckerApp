@@ -28,7 +28,7 @@ public class PalindromeCheckerApp {
     }
 
     public static void main(String[] args) {
-        String input = "madam";
+        String input = "civic";
 
         if (isPalindrome(input)) {
             System.out.println(input + " is a palindrome.");
