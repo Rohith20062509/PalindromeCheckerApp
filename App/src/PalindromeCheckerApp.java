@@ -1,64 +1,44 @@
-public class LinkedListPalindrome {
+public class RecursiveLinkedListPalindrome {
 
-    // Node class
     static class Node {
         char data;
         Node next;
 
         Node(char data) {
             this.data = data;
-            this.next = null;
         }
     }
 
-    // Check if linked list is palindrome
+    static Node left; // Pointer to move from start
+
     public static boolean isPalindrome(Node head) {
-        if (head == null || head.next == null) {
+        left = head;
+        return checkPalindrome(head);
+    }
+
+    private static boolean checkPalindrome(Node right) {
+        if (right == null) {
             return true;
         }
 
-        // Step 1: Find middle using slow & fast pointer
-        Node slow = head;
-        Node fast = head;
-
-        while (fast != null && fast.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
+        // Recursively go to end
+        boolean isPal = checkPalindrome(right.next);
+        if (!isPal) {
+            return false;
         }
 
-        // Step 2: Reverse second half
-        Node secondHalf = reverse(slow);
-        Node copySecondHalf = secondHalf;
-
-        // Step 3: Compare both halves
-        Node firstHalf = head;
-        while (copySecondHalf != null) {
-            if (firstHalf.data != copySecondHalf.data) {
-                return false;
-            }
-            firstHalf = firstHalf.next;
-            copySecondHalf = copySecondHalf.next;
+        // Compare left and right
+        if (left.data != right.data) {
+            return false;
         }
+
+        // Move left pointer forward
+        left = left.next;
 
         return true;
     }
 
-    // Reverse linked list
-    private static Node reverse(Node head) {
-        Node prev = null;
-        Node current = head;
-
-        while (current != null) {
-            Node next = current.next;
-            current.next = prev;
-            prev = current;
-            current = next;
-        }
-
-        return prev;
-    }
-
-    // Helper method to insert at end
+    // Helper method to append nodes
     public static Node append(Node head, char data) {
         Node newNode = new Node(data);
 
@@ -77,7 +57,6 @@ public class LinkedListPalindrome {
 
     public static void main(String[] args) {
         Node head = null;
-
         String input = "madam";
 
         for (char ch : input.toCharArray()) {
