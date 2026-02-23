@@ -6,20 +6,29 @@
 
 public class PalindromeCheckerApp {
     public static void main(String[] args) {
-        // Hardcoded string
-        String str = "madam";
+        String input = "radar";
+        char[] chars = input.toCharArray();
+        int start = 0;
 
-        // Reverse string
-        String rev = "";
-        for (int i = str.length() - 1; i >= 0; i--) {
-            rev = rev + str.charAt(i);
+        int end = chars.length - 1;
+
+        boolean isPalindrome = true;
+
+        while (start < end) {
+            if (chars[start] != chars[end]) {
+                isPalindrome = false;
+                break;
+            }
+            start++;
+            end--;
         }
 
-        // Check palindrome
-        if (str.equals(rev)) {
-            System.out.println(str + " is a Palindrome");
-        } else {
-            System.out.println(str + " is not a Palindrome");
-        }
+        // Print result
+        if (isPalindrome)
+            System.out.println(input + " is a Palindrome");
+        else
+            System.out.println(input + " is NOT a Palindrome");
+
+
     }
 }
